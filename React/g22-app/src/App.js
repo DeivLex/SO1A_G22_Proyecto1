@@ -27,7 +27,7 @@ function App() {
               </li>
           </ul>
         </div>
-      </nav>
+      </nav> 
       <Switch>
           <Route exact path="/vistas">
             <Vista />
