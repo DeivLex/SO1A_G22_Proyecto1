@@ -3,8 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Vista from './Vista';
 import Metrica from './Metrica';
@@ -30,14 +29,14 @@ function App() {
       </nav> 
       <Switch>
           <Route exact path="/vistas">
-            <Vista />
+            <Metrica />
           </Route>
           <Route exact path="/metricas">
-            <Metrica />
+            <Vista />
           </Route>
       </Switch>
     </Router>
   );
 }
-
+ 
 export default App;
