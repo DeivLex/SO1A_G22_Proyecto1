@@ -1,0 +1,22 @@
+version: "2"
+services:
+  nats:
+    image: 'nats'
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+
+  nats-pub:
+      build: ./nats-pub
+      restart: on-failure
+      ports:
+        - "80:8000"
+      depends_on:
+        - nats
+
+  nats-sub:
+      build: ./nats-sub
+      restart: on-failure
+      depends_on:
+        - nats
