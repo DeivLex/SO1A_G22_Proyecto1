@@ -5,7 +5,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Vista from './Vista';
+import { Vista } from './';
 import Metrica from './Metrica';
 
 function App() {

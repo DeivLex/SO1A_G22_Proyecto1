@@ -33,8 +33,27 @@ const divStyle = {
     margin: '2%'
 };
 
-function Vista() {
-    return (
+class Vista extends React.Component{
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      totalReactPackages: []
+    };
+  }
+
+  componentDidMount() {
+    // Simple GET request using fetch
+    fetch('https://reqres.in/api/users')
+        .then(response => response.json())
+        .then(datas => this.setState({ totalReactPackages: datas.data }));
+}
+
+  render() {
+    const { totalReactPackages } = this.state;
+    console.log(totalReactPackages);
+     return(
         <div>
             <br></br>
             <br></br>
@@ -52,24 +71,16 @@ function Vista() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                  {
+                    totalReactPackages.map(el => 
+                      <tr>
+                      <th scope="row"> {el.id} </th>
+                      <td>{el.first_name}</td>
+                      <td>{el.last_name}</td>
+                      <td>{el.email}</td>
+                      </tr>
+                    )
+                  }
                 </tbody>
                 </table>
             </div>
@@ -91,7 +102,8 @@ function Vista() {
             </div>
             <hr></hr>
         </div>
-    )
+      );
+    }
 }
 
-export default Vista
+export {Vista};
