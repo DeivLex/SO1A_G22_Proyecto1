@@ -51,14 +51,23 @@ func main() {
 	)
 	failOnError(err, "Failed to register a consumer")
 
+	type Data struct {
+		Name         string `json:"name"`
+		Location     string `json:"location"`
+		Age          int    `json:"age"`
+		Infectedtype string `json:"infectedtype"`
+		State        string `json:"state"`
+	}
 	// Receiving messages
 	forever := make(chan bool)
 
 	go func() {
-		for req := range msgs {
-			log.Printf("Received a message: %s", req.Body)
-			edad := strconv.Itoa(req.Age)
-			jsonData := map[string]string{"name": req.Name, "location": req.Location, "age": edad, "infectedtype": req.Infectedtype, "state": req.State, "path": "RabbitMQ"}
+		for d := range msgs {
+			log.Printf("Received a message: %s", d.Body)
+			user := Data{}
+			json.Unmarshal(d.Body, &user)
+			edad := strconv.Itoa(user.Age)
+			jsonData := map[string]string{"name": user.Name, "location": user.Location, "age": edad, "infectedtype": user.Infectedtype, "state": user.State, "path": "RabbitMQ"}
 			jsonValue, _ := json.Marshal(jsonData)
 			req, err := http.Post("http://34.121.110.42/", "application/json", bytes.NewBuffer(jsonValue))
 			req.Header.Set("Content-Type", "application/json")
