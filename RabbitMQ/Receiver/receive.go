@@ -2,9 +2,11 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/streadway/amqp"
 )
@@ -53,11 +55,12 @@ func main() {
 	forever := make(chan bool)
 
 	go func() {
-		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
-
-			postBody := []byte(string(d.Body))
-			req, err := http.Post("http://mongo-server:5000/", "application/json", bytes.NewBuffer(postBody))
+		for req := range msgs {
+			log.Printf("Received a message: %s", req.Body)
+			edad := strconv.Itoa(req.Age)
+			jsonData := map[string]string{"name": req.Name, "location": req.Location, "age": edad, "infectedtype": req.Infectedtype, "state": req.State, "path": "RabbitMQ"}
+			jsonValue, _ := json.Marshal(jsonData)
+			req, err := http.Post("http://34.121.110.42/", "application/json", bytes.NewBuffer(jsonValue))
 			req.Header.Set("Content-Type", "application/json")
 			failOnError(err, "POST new document")
 			defer req.Body.Close()

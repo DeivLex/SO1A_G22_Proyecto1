@@ -79,11 +79,61 @@ const divStyle = {
     margin: '2%'
 };
 
-function Metrica() {
-    window.onload = function() {
-        var ctx = document.getElementById("chart-area").getContext("2d");
-        window.myDoughnut = new Chart(ctx, config);
-    };
+class Metrica extends React.Component{
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          Reporte1: [],
+          Reporte2: [],
+          Reporte3: [],
+          Reporte4: [],
+          Reporte5: [],
+          Reporte6: [],
+          Reporte7: []
+        };
+
+        window.onload = function() {
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            window.myDoughnut = new Chart(ctx, config);
+        };
+      }
+
+    componentDidMount() {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        };
+        Promise.all([
+            fetch("http://34.121.110.42/find",requestOptions),
+            fetch("http://34.121.110.42/find",requestOptions),
+            fetch("http://34.121.110.42/funnel",requestOptions),
+            fetch("http://34.121.110.42/circular1",requestOptions),
+            fetch("http://34.121.110.42/circular2",requestOptions),
+            fetch("http://34.121.110.42/ultimos",requestOptions),
+            fetch("http://34.121.110.42/edades",requestOptions)
+          ]).then(allResponses => {
+            allResponses[0].json().then(data => this.setState({ Reporte1: data }))
+            allResponses[1].json().then(data => this.setState({ Reporte2: data }))
+            allResponses[2].json().then(data => this.setState({ Reporte3: data }))
+            allResponses[3].json().then(data => this.setState({ Reporte4: data }))
+            allResponses[4].json().then(data => this.setState({ Reporte5: data }))
+            allResponses[5].json().then(data => this.setState({ Reporte6: data }))
+            allResponses[6].json().then(data => this.setState({ Reporte7: data })) 
+          });
+    }
+
+    render() {
+        const { Reporte1,Reporte2,Reporte3,Reporte4,Reporte5,Reporte6,Reporte7 } = this.state;
+        console.log(Reporte1);
+        console.log(Reporte2);
+        console.log(Reporte3);
+        console.log(Reporte4);
+        console.log(Reporte5);
+        console.log(Reporte6);
+        console.log(Reporte7);
     return (
         <div>
             <br></br>
@@ -95,31 +145,27 @@ function Metrica() {
                 <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">InfectedType</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Path</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
+                  {
+                    Reporte1.map(el => 
+                      <tr>
+                      <th scope="row"> {el.name} </th>
+                      <td>{el.location}</td>
+                      <td>{el.age}</td>
+                      <td>{el.infectedtype}</td>
+                      <td>{el.state}</td>
+                      <td>{el.path}</td>
+                      </tr>
+                    )
+                  }
                 </tbody>
                 </table>
             </div>
@@ -215,7 +261,8 @@ function Metrica() {
             </div>
             </div>
         </div>
-    )
+      );
+    }
 }
 
-export default Metrica
+export {Metrica};

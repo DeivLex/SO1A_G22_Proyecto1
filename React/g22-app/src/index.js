@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 export * from './Vista';
+export * from './Metrica';
 
 ReactDOM.render(
   <React.StrictMode>

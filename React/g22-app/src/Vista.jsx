@@ -39,20 +39,24 @@ class Vista extends React.Component{
     super(props);
 
     this.state = {
-      totalReactPackages: []
+      Reporte1: []
     };
   }
 
   componentDidMount() {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+    };
     // Simple GET request using fetch
-    fetch('https://reqres.in/api/users')
+    fetch('http://34.121.110.42/find',requestOptions)
         .then(response => response.json())
-        .then(datas => this.setState({ totalReactPackages: datas.data }));
+        .then(data => this.setState({ Reporte1: data }));
 }
 
   render() {
-    const { totalReactPackages } = this.state;
-    console.log(totalReactPackages);
+    const { Reporte1 } = this.state;
      return(
         <div>
             <br></br>
@@ -64,20 +68,24 @@ class Vista extends React.Component{
                 <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">InfectedType</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Path</th>
                     </tr>
                 </thead>
                 <tbody>
                   {
-                    totalReactPackages.map(el => 
+                    Reporte1.map(el => 
                       <tr>
-                      <th scope="row"> {el.id} </th>
-                      <td>{el.first_name}</td>
-                      <td>{el.last_name}</td>
-                      <td>{el.email}</td>
+                      <th scope="row"> {el.name} </th>
+                      <td>{el.location}</td>
+                      <td>{el.age}</td>
+                      <td>{el.infectedtype}</td>
+                      <td>{el.state}</td>
+                      <td>{el.path}</td>
                       </tr>
                     )
                   }
