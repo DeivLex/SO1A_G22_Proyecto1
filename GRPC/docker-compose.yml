@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+  grpcclient:
+    container_name: clientgo
+    build: ./client
+    restart: always
+    ports:
+      - "80:8000"
+    networks:
+      - grpc
+    volumes:
+      - ./client:/app
+  
+  grpcserver:
+    container_name: servergo
+    build: ./server
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - grpc
+    volumes:
+      - ./server:/app
+
+networks:
+  grpc:
+    driver: "bridge"
