@@ -147,6 +147,18 @@ app.post("/cpu", async (req, res) => {
     });
 });
 
+/*LECTURA DE MEMORIA RAM*/
+app.post("/clean", async (req, res) => {
+    Casos.remove()
+     .then(result => {
+        res.send(result);
+     })
+     .catch(err => {
+         console.log(err);
+         res.send(err);
+     });
+});
+
 
 /*METODOS VARIOS*/
 function getRegion(location){
