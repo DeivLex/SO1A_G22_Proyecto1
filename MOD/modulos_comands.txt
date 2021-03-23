@@ -1,0 +1,17 @@
+#Compilar el c
+make
+
+#Ver los modlos
+lsmod
+
+#Ver los archivos en lista
+ls -l
+
+#Agregar el modulo
+insmod modulo_cpu.ko
+
+#Eliminar modulo
+rmmod modulo_cpu
+
+#Ver modulo existente
+lsmod | grep modulo_cpu
