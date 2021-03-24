@@ -1,8 +1,8 @@
-# SO1A_G22_Proyecto1
-Proyecto 1 De Sistemas Operativos 1 - Grupo 22
+# SO1A_G22_Proyecto1 💡
+Proyecto 1 de Sistemas Operativos 1 - Grupo 22
 
-# Manual Tecnico
-# Locust
+# Manual Tecnico📔
+# Locust 
 ![image](https://user-images.githubusercontent.com/34359891/112256664-c87b3e80-8c29-11eb-8c1b-64c4c8777ec7.png)
 
 Es importante realizar test de peticiones hacia nuestra aplicacion, es por ello que se utilizo un servidor local que es el encargado de realizar el load test. Enviando los datos que se encuentran en el archivo .JSON que se carga para generar las peticiones.
@@ -70,7 +70,7 @@ class MessageTraffic(HttpUser):
 ```
 
 
-# Servidor en go
+# Servidor en go 
 
 [![N|Solid](https://raw.githubusercontent.com/coneking/golang/develop/images/gogo.png)](https://golang.org/)
 
@@ -358,11 +358,406 @@ networks:
     driver: "bridge"
 ```
 
+## MongoDB
+![mongo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1280px-MongoDB_Logo.svg.png)
+
+Dentro de las bases de datos NoSQL, probablemente una de las más famosas sea MongoDB. Con un concepto muy diferente al de las bases de datos relacionales, se está convirtiendo en una interesante alternativa.
+
+Pero cuándo uno se inicia en MongoDB se puede sentir perdido. No tenemos tablas, no tenemos registros y lo que es más importante, no tenemos SQL. Aun así, MongoDB es una seria candidata para almacenar los datos de nuestras aplicaciones.
+
+MongoDB guarda la estructura de los datos en documentos BSON con un esquema dinámico, lo que implica que no existe un esquema predefinido. Los elementos de los datos se denominan documentos y se guardan en colecciones. Una colección puede tener un número indeterminado de documentos. Comparando con una base de datos relacional, se puede decir que las colecciones son como tablas y los documentos son registros en la tabla. 
+
+En un documento, se pueden agregar, eliminar, modificar o renombrar nuevos campos en cualquier momento, ya que no hay un esquema predefinido. La estructura de un documento es simple y compuesta por pares llave/valor, parecido a las matrices asociativas en un lenguaje de programación, esto es debido a que MongoDB sigue el formato de JSON. En MongoDB la clave es el nombre del campo y el valor es su contenido, los cuales se separan mediante el uso de “:”, tal y como se puede ver en el siguiente ejemplo. Como valor se pueden usar números, cadenas o datos binarios como imágenes o cualquier otro.
+
+## API 
+![(hola)](https://icon-library.com/images/api-icon/api-icon-3.jpg)
 
 
+Una API es un conjunto de definiciones y protocolos que se utiliza para desarrollar e integrar el software de las aplicaciones. API significa interfaz de programación de aplicaciones.
+
+Las API permiten que sus productos y servicios se comuniquen con otros, sin necesidad de saber cómo están implementados. Esto simplifica el desarrollo de las aplicaciones y permite ahorrar tiempo y dinero. Las API le otorgan flexibilidad; simplifican el diseño, la administración y el uso de las aplicaciones, y proporcionan oportunidades de innovación, lo cual es ideal al momento de diseñar herramientas y productos nuevos (o de gestionar los actuales).
+
+A veces, las API se consideran como contratos, con documentación que representa un acuerdo entre las partes: si una de las partes envía una solicitud remota con cierta estructura en particular, esa misma estructura determinará cómo responderá el software de la otra parte.
 
 
+### Servidor Node JS 
+![node](https://fernando-gaitan.com.ar/wp-content/uploads/nodejs_id.png)
+
+Librerias utilizadas:
+- Express
+- BodyParser
+- Cors
+- Router
+- Fs
+- Mongoose
+
+Se importan las librerias:
+```
+var express = require('express');
+var bodyParser = require('body-parser');
+const cors = require('cors');
+const Router  = require("express");
+const fs = require('fs');
+let mongoose = require("mongoose")
+```
+
+Se instancia el servidor con sus configuraciones y se inicia:
+```
+/*SERVIDOR Y CONFIGURACIONES*/
+var app = express();
+var port = 5000;
+
+var corsOptions = { origin: true, optionsSuccessStatus: 200 };
+app.use(cors(corsOptions));
+app.use(bodyParser.json({ limit: '10mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+
+app.use(require("./rutas.js"));
+app.use(express.static('public'));
+
+/*INICIO DEL SERVIDOR*/
+app.listen(port);
+console.log('Server running in port: ', port);
+```
+
+Se instancias las variables y los servicios de mongodb a utilizar:
+```
+const Casos = require("./schemas/Casos");
+
+/*VARIABLES A UTILIZAR*/
+const app = Router();
+let top = new Array;
+```
+
+```
+var Schema = mongoose.Schema;
+
+/* localhost = mongo (docker containter name)*/
+/*CONEXION A MONGODB*/
+mongoose.connect('mongodb://mongo:27017/proyecto1', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(result => console.log("Conectado a db"))
+    .catch(err => console.log(err));
+    
+var Model = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    },
+    region: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: Number,
+        required: true
+    },
+    infectedtype: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    path: {
+        type: String,
+        required: true
+    }
+}, { timestamps: true});
+
+let Casos = mongoose.model("Casos", Model)
+module.exports = Casos;
+```
+
+Ejemplos de servicios (los demas se encuentran en la carpeta [API](https://github.com/DeivLex/SO1A_G22_Proyecto1/tree/main/API)):
+- Insercion de datos a mongodb
+```
+/*AGREGA LOS DATOS QUE ENVIAN LOS INTERMEDIARIOS*/
+app.post("/", async (req, res) => {
+    let region = getRegion(req.body.location);
+
+    let nuevo = new Casos({
+        name: req.body.name,
+        location: req.body.location,
+        region: region,
+        age: req.body.age,
+        infectedtype: req.body.infectedtype,
+        state: req.body.state,
+        path: req.body.path
+    });
+
+    nuevo.save(nuevo)
+     .then(result => {
+        res.send(result);
+     })
+     .catch(err => {
+         console.log(err)
+         res.send(err);
+     });
+});
+```
+
+- Busqueda de todos los registros en mongodb
+```
+/*TABLA DE DATOS RECOPILADOS*/
+app.post("/find", async (req, res) => {
+    Casos.find()
+     .then(result => {
+        res.send(result);
+     })
+     .catch(err => {
+         console.log(err)
+         res.send(err);
+     });
+});
+```
+
+## Modulos
+![modulo](https://images.vexels.com/media/users/3/140692/isolated/preview/72d1f12edf758d24f5b6db73bac4f297-logo-de-linux-by-vexels.png)
+
+El kernel de Linux tiene un diseño modular. En el momento de arranque, sólo se carga un kernel residente mínimo en memoria. Por ello, cuando un usuario solicita alguna característica que no esta presente en el kernel residente, se carga dinámicamente en memoria un módulo kernel, también conocido algunas veces como un controlador.
+
+Durante la instalación, se prueba el hardware en el sistema. Basado en esta prueba y en la información proporcionada por el usuario, el programa de instalación decide qué módulos necesita cargar en el momento de arranque. El programa de instalación configura el mecanismo de carga dinámica para que funcione de forma transparente.
+
+Si se añade un nuevo hardware después de la instalación y este requiere un módulo kernel, el sistema debe ser configurado para cargar el módulo adecuado para el nuevo hardware. Cuando el sistema es arrancado con el nuevo hardware, se ejecuta el programa Kudzu detecta el nuevo hardware si es soportado y configura el módulo necesario para él. El módulo tambíen puede ser especificado manualmente modificando el archivo de configuración del módulo, /etc/modules.conf.
+
+### CPU
+![cpu](https://user-images.githubusercontent.com/53025349/112263981-c61ee180-8c35-11eb-9d59-8a1408b120eb.jpg)
+
+Librerias utilizadas:
+```
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/sched/signal.h>
+#include <linux/sched.h>
+#include <linux/fs.h>
+```
+
+Estructuras utilizadas para la lectura de CPU:
+```
+struct task_struct *task;
+struct task_struct *childtask; secundarios
+struct task_struct *memtask; 
+struct list_head *list;
+```
+
+Codigo de inicio y fin del modulo:
+```
+static struct file_operations my_fops = {
+    .owner = THIS_MODULE,
+    .open = my_proc_open,
+    .release = single_release,
+    .read = seq_read,
+    .llseek = seq_lseek,
+    .write = my_proc_write
+};
+
+static int __init cpu_mod_init(void){ //modulo de inicio
+	struct proc_dir_entry *entry;
+    entry = proc_create("cpu_proyecto1", 0, NULL, &my_fops);
+	
+	if(!entry){
+        return -1;
+    }else{
+		printk(KERN_INFO "@cpu_proyecto1 lectura de cpu iniciado");
+    }
+    return 0;
+}
+
+static void __exit cpu_mod_exit(void){
+	remove_proc_entry("cpu_proyecto1", NULL);
+	printk(KERN_INFO "@cpu_proyecto1 lectura de cpu finalizado");
+}
+
+module_init(cpu_mod_init);
+module_exit(cpu_mod_exit);
+```
+
+Lectura de la informacion de los procesos y escritura del archivo:
+```
+//Mostrar PID, nombre, PID del padre y estado
+static int write_cpu(struct seq_file * cpufile, void *v){
+	
+	int p = 0;
+	seq_printf(cpufile, "[\n");
+	for_each_process( task ){
+		if(p == 0){
+			p = 1;
+		}else if(p == 1){
+			seq_printf(cpufile, "},\n");
+		}
+
+		seq_printf(cpufile, "{\n");
+		seq_printf(cpufile, "\"nombre\": \"%s\",\n",task->comm);
+		seq_printf(cpufile, "\"pid\": %d,\n",task->pid);
+		seq_printf(cpufile, "\"padre\": %d,\n",task->pid);
+		seq_printf(cpufile, "\"estado\": %ld,\n",task->state);
+		seq_printf(cpufile, "\"hijo\":\n");
+		seq_printf(cpufile, "\t[\n");
+
+		int p2 = 0;
+		list_for_each( list,&task->children ){
+			if(p2 == 0){
+				p2 = 1;
+			}else if(p2 == 1){
+				seq_printf(cpufile, "\t},\n");
+			}
+
+			seq_printf(cpufile, "\t{\n");
+			childtask= list_entry( list, struct task_struct, sibling );
+			
+			seq_printf(cpufile, "\t\"nombre\": \"%s\",\n",childtask->comm);
+			seq_printf(cpufile, "\t\"pid\": %d,\n",childtask->pid);
+			seq_printf(cpufile, "\t\"padre\": %d,\n",task->pid);
+			seq_printf(cpufile, "\t\"estado\": %ld\n",childtask->state);
+			
+		}
+		if(p2 == 1){
+			seq_printf(cpufile, "\t}\n");
+		}
+		seq_printf(cpufile, "\t]\n");
+		
+	}
+	seq_printf(cpufile, "}\n");
+	seq_printf(cpufile, "]");
+
+	return 0;
+}
+
+static int my_proc_open(struct inode *inode, struct file*file){
+	return single_open(file, write_cpu, NULL);	
+}
+
+static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos)
+{
+    return 0;
+}
+```
 
 
+### RAM
+![ram](https://user-images.githubusercontent.com/53025349/112263952-b7382f00-8c35-11eb-867e-ace3a2fe9b3b.jpg)
+
+Librerias utilizadas:
+```
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <asm/uaccess.h>
+#include <linux/hugetlb.h>
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/fs.h>
+```
+
+Estructuras utilizadas para la lectura de RAM:
+```
+struct sysinfo inf;
+```
+
+Codigo de inicio y fin del modulo:
+```
+static struct file_operations my_fops = {
+    .owner = THIS_MODULE,
+    .open = my_proc_open,
+    .release = single_release,
+    .read = seq_read,
+    .llseek = seq_lseek,
+    .write = my_proc_write
+};
+
+static int ram_mod_init(void){
+	proc_create("ram_proyecto1", 0, NULL, &my_fops);
+	printk(KERN_INFO "@ram_proyecto1 lectura de cpu iniciado");
+ 	return 0;
+}
+
+static void ram_mod_exit(void){
+	remove_proc_entry("ram_proyecto1",NULL);
+	printk(KERN_INFO "@ram_proyecto1 lectura de cpu finalizado");
+}
 
 
+module_init(ram_mod_init);
+module_exit(ram_mod_exit);
+```
+
+Lectura de la informacion de los procesos y escritura del archivo:
+```
+//Mostrar total, uso, libre en MB
+static int write_ram(struct seq_file * archivo, void *v){
+    si_meminfo(&inf);
+    long total_memoria = (inf.totalram * 4);
+    long memoria_libre = (inf.freeram * 4);
+    seq_printf(archivo, "{\n\t\"total\":%8lu,\n", total_memoria/1024);
+    seq_printf(archivo, "\t\"uso\":%8lu,\n", (total_memoria-memoria_libre)/1024);
+    seq_printf(archivo, "\t\"libre\":%8lu\n}", memoria_libre/1024);
+	return 0;
+}
+
+static int my_proc_open(struct inode *inode, struct file*file){
+	return single_open(file, write_ram, NULL);	
+}
+
+static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos){
+    return 0;
+}
+```
+
+### Makefile
+![make](https://lignux.com/wp-content/uploads/2013/09/linux-tux-console.jpg)
+
+El comando de linux make nos ayuda a compilar nuestros programas. Presenta muchas ventajas para programas grandes, en los que hay muchos ficheros fuente (muchos .c y muchos .h) repartidos por varios directorios. Principalmente aporta dos ventajas:
+
+- Es capaz de saber qué cosas hay que recompilar. Si cuando estamos depurando nuestro programa tocamos un fichero fuente, al compilar con make sólo se recompilaran aquellos ficheros que dependan del que hemos tocado. Si compilamos a mano con cc, (o el compilador que sea), o tenemos en la cabeza esas dependencias para compilar sólo lo que hace falta, o lo compilamos todo. Si el proyecto es grande, se nos olvidará alguna dependencia o nos pasaremos horas compilando.
+- Nos guarda los comandos de compilación con todos sus parámetros para encontrar librerías, ficheros de cabecera (.h), etc, etc. No tendremos que escribir largas líneas de compilación con montones de opciones que debemos saber de memoria o, al menos, sólo tendremos que hacerlo una vez.
+
+Archivos mekifile para compilar los modulos CPU y RAM:
+- CPU
+```
+obj-m += modulo_cpu.o
+
+all:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(shell pwd) 
+clean:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(shell pwd) clean
+```
+
+- RAM
+```
+obj-m += modulo_ram.o
+
+all:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(shell pwd) 
+clean:
+	make -C /lib/modules/$(shell uname -r)/build/ M=$(shell pwd) clean
+```
+
+
+Comandos necesarios para crear los modulos, cargarlos o eliminaros:
+```
+#Compilar el makefile
+make
+
+#Ver los modulos
+lsmod
+
+#Ver los archivos en lista
+ls -l
+
+#Agregar el modulo modulo_cpu.ko
+insmod modulo_cpu.ko
+
+#Eliminar modulo modulo_cpu
+rmmod modulo_cpu
+
+#Ver modulo existente modulo_cpu
+lsmod | grep modulo_cpu
+```
