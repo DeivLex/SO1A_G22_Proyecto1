@@ -3,18 +3,20 @@
 package main
 
 import (
-/*	"bytes"
+	"bytes"
 	//"io/ioutil"
 	"net/http"
-	"encoding/json"*/
-	
+	"encoding/json"
+	"strconv"
 	nats "github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect("nats://nats:4222")
+	//nc, err := nats.Connect(nats.DefaultURL)
+	url := "http://34.121.110.42/"
 	if err != nil {
 		panic(err)
 	}
@@ -25,7 +27,7 @@ func main() {
 	}
 	defer ec.Close()
 
-	log.Info("Connected to NATS and ready to receive messages")
+	log.Info("NATS sub conectado")
 
 	// Make sure this type and its properties are exported
 	// so the serializer doesn't bork
@@ -37,16 +39,29 @@ func main() {
 		Infectedtype string
 		State string
 	}
+	
 	personChanRecv := make(chan *Data)
 	ec.BindRecvChan("request_subject", personChanRecv)
 
 	for {
 		// Wait for incoming messages
 		req := <-personChanRecv
-		/*jsonData := map[string]string{"Name":req.Name, "Age":"Age"}
+		edad := strconv.Itoa(req.Age)
+		jsonData := map[string]string{"name": req.Name,"location": req.Location,"age": edad,"infectedtype": req.Infectedtype,"state": req.State, "path" : "NATS"}
 		jsonValue, _ := json.Marshal(jsonData)
-		http.Post("http://localhost:3000/pub", "application/json", bytes.NewBuffer(jsonValue))
-		*/
-		println("recibido: " + req.Name)
+		 
+		res, err:= http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
+		if(err != nil){
+		
+		}else{
+			var pt Data
+			err := json.NewDecoder(res.Body).Decode(&pt)
+			if err != nil {
+				
+			}else{
+				println("Se envio a la API: " + pt.Name)
+			}
+		}
+	
 	}
 }

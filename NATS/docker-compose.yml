@@ -1,11 +1,12 @@
 version: "2"
 services:
   nats:
-    image: 'nats'
+    image: 'nats:2.1.9'
     expose:
       - "4222"
     ports:
       - "8222:8222"
+    hostname: nats-server
 
   nats-pub:
       build: ./nats-pub

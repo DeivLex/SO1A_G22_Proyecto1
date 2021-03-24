@@ -20,7 +20,9 @@ type Data struct {
 
 func main() {
 
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect("nats://nats:4222")
+	//nc, err := nats.Connect(nats.DefaultURL)
+	
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +33,7 @@ func main() {
 	}
 	defer ec.Close()
 
-	log.Info("Connected to NATS and ready to send messages")
+	log.Info("NATS pub conectado")
 
 	personChanSend := make(chan *Data)
 	ec.BindSendChan("request_subject", personChanSend)
@@ -41,10 +43,11 @@ func main() {
 		var d Data
 		err := json.NewDecoder(r.Body).Decode(&d)
 		if err != nil {
-			println("error" )
+			
 		}else{
 			req := d
 			personChanSend <- &req
+
 		}
 	})
     http.ListenAndServe(":8000", nil)
