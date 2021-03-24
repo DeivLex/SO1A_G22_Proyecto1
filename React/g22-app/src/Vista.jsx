@@ -1,33 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Doughnut, Line } from '@reactchartjs/react-chart.js'
-
-const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 20, 21, 20, 17],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  }
+import ReporteRam from './ReporteRam';
+import ReporteRam2 from './ReporteRam2';
 
 const divStyle = {
     margin: '2%'
@@ -50,13 +24,14 @@ class Vista extends React.Component{
         body: JSON.stringify({})
     };
     // Simple GET request using fetch
-    fetch('http://34.121.110.42/find',requestOptions)
+    fetch('http://34.121.110.42/cpu',requestOptions)
         .then(response => response.json())
         .then(data => this.setState({ Reporte1: data }));
 }
 
   render() {
     const { Reporte1 } = this.state;
+    var cont = 1;
      return(
         <div>
             <br></br>
@@ -68,24 +43,22 @@ class Vista extends React.Component{
                 <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">InfectedType</th>
-                    <th scope="col">State</th>
-                    <th scope="col">Path</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Pid</th>
+                    <th scope="col">Padre</th>
+                    <th scope="col">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                   {
                     Reporte1.map(el => 
                       <tr>
-                      <th scope="row"> {el.name} </th>
-                      <td>{el.location}</td>
-                      <td>{el.age}</td>
-                      <td>{el.infectedtype}</td>
-                      <td>{el.state}</td>
-                      <td>{el.path}</td>
+                      <th scope="row"> {cont++} </th>
+                      <td>{el.nombre}</td>
+                      <td>{el.pid}</td>
+                      <td>{el.padre}</td>
+                      <td>{el.estado}</td>
                       </tr>
                     )
                   }
@@ -97,15 +70,14 @@ class Vista extends React.Component{
             <div class="card" style={divStyle}>
             <div class="card-body">
                 <h3>Utilización de la RAM (Porcentaje)</h3>
-                <Doughnut data={data} />
+                <ReporteRam />
             </div>
             </div>
-            <hr></hr>
             <hr></hr>
             <div class="card" style={divStyle}>
             <div class="card-body">
                 <h3>Utilización de la RAM (Valor)</h3>
-                <Line data={data} />
+                <ReporteRam2/>
             </div>
             </div>
             <hr></hr>

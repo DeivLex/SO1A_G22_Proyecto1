@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Pie } from '@reactchartjs/react-chart.js';
+import { Line } from '@reactchartjs/react-chart.js';
 import axios from "axios";
 
-const Reporte5 = () => {
-  const [chartData, setChartData] = useState({});
+let totalRam = '0';
 
+let empSal = [0];
+let empAge = ['Uso'];
+const ReporteRam2 = () => {
+  const [chartData, setChartData] = useState({});
   const chart = () => {
-    let empSal = [];
-    let empAge = [];
     axios
-      .post("http://34.121.110.42/circular2")
+      .post("http://34.121.110.42/ram")
       .then(res => {
-        for (const dataObj of res.data) {
-          empSal.push(parseInt(dataObj[0]));
-          empAge.push(dataObj[1]);
-        }
+        console.log(res.data);
+        empSal.push(parseInt(res.data.uso));
+        empAge.push('Uso')
+        totalRam =  res.data.total;
         setChartData({
           labels: empAge,
           datasets: [
             {
-              label: "level of thiccness",
+              label: "Ram utilizada",
               data: empSal,
               backgroundColor: ["rgba(75, 192, 192, 0.6)",'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)',
@@ -47,10 +48,25 @@ const Reporte5 = () => {
   return (
     <div className="App">
       <div>
-        <Pie data={chartData}/>
+        <h2>Total: {totalRam}MB </h2>
+        <Line data={chartData} options={
+          {
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    min: 0,
+                    max: parseInt(totalRam),
+                    stepSize: 200
+                  },
+                },
+              ],
+            },
+          }
+        }/>
       </div>
     </div>
   );
 };
 
-export default Reporte5;
+export default ReporteRam2;

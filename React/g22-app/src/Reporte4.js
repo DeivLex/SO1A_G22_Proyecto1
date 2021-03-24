@@ -4,8 +4,6 @@ import axios from "axios";
 
 const Reporte4 = () => {
   const [chartData, setChartData] = useState({});
-  const [employeeSalary, setEmployeeSalary] = useState([]);
-  const [employeeAge, setEmployeeAge] = useState([]);
 
   const chart = () => {
     let empSal = [];
@@ -42,7 +40,9 @@ const Reporte4 = () => {
   };
 
   useEffect(() => {
-    chart();
+    setInterval(() => {
+      chart();
+    }, 5000);
   }, []);
   return (
     <div className="App">

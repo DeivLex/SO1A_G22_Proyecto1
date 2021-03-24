@@ -5,6 +5,10 @@ import Reporte4 from './Reporte4'
 import Reporte5 from './Reporte5'
 import Reporte7 from './Reporte7'
 
+const tbodyStyle =  {
+    height: '500px',     
+    overflow : 'auto'
+}
 
 const divStyle = {
     margin: '2%'
@@ -90,7 +94,7 @@ class Metrica extends React.Component{
         };
         Promise.all([
             fetch("http://34.121.110.42/find",requestOptions),
-            fetch("http://34.121.110.42/find",requestOptions),
+            fetch("http://34.121.110.42/region",requestOptions),
             fetch("http://34.121.110.42/funnel",requestOptions),
             fetch("http://34.121.110.42/ultimos",requestOptions)
           ]).then(allResponses => {
@@ -115,6 +119,7 @@ class Metrica extends React.Component{
             this.config.data.labels.push(R3Label[index]); 
             this.config.data.datasets[0].data.push(R3Data[index]);
         }
+        let report2 = String(Reporte2[0]).split(',');
     return (
         <div>
             <br></br>
@@ -122,6 +127,7 @@ class Metrica extends React.Component{
             <br></br>
             <div class="card" style={divStyle}>
             <div class="card-body">
+            <div class="scrollit" style={tbodyStyle}>
                 <h3>Tabla de datos recopilados
                 <select name="cars"  onClick={this.handleSelectChange} id="cars">
                     <option value="Todos">Todos</option>
@@ -143,11 +149,8 @@ class Metrica extends React.Component{
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        console.log(name)
-                    }
                   {
-                    Reporte1.filter(number => (number.path == name) || (name == 'Todos') ).map(el =>
+                    Reporte1.filter(number => (number.path === name) || (name === 'Todos') ).map(el =>
                       <tr>
                       <th scope="row"> {el.name} </th>
                       <td>{el.location}</td>
@@ -162,6 +165,7 @@ class Metrica extends React.Component{
                 </table>
             </div>
             </div>
+            </div>
             <hr></hr>
             <div class="card" style={divStyle}>
             <div class="card-body">
@@ -170,17 +174,13 @@ class Metrica extends React.Component{
                 <thead>
                     <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Nombre</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <th scope="row">{report2[0]}</th>
+                    <td>{report2[1]}</td>
                     </tr>
                 </tbody>
                 </table>

@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Pie } from '@reactchartjs/react-chart.js';
+import { Doughnut } from '@reactchartjs/react-chart.js';
 import axios from "axios";
 
-const Reporte5 = () => {
-  const [chartData, setChartData] = useState({});
+let totalRam = '';
 
+const ReporteRam = () => {
+  const [chartData, setChartData] = useState({});
   const chart = () => {
     let empSal = [];
-    let empAge = [];
     axios
-      .post("http://34.121.110.42/circular2")
+      .post("http://34.121.110.42/ram")
       .then(res => {
-        for (const dataObj of res.data) {
-          empSal.push(parseInt(dataObj[0]));
-          empAge.push(dataObj[1]);
-        }
+        empSal.push(parseInt((res.data.uso/res.data.total)*100));
+        empSal.push(parseInt((res.data.libre/res.data.total)*100));
+        totalRam =  res.data.total;
         setChartData({
-          labels: empAge,
+          labels: ["Uso %","Libre %"],
           datasets: [
             {
               label: "level of thiccness",
@@ -47,10 +46,11 @@ const Reporte5 = () => {
   return (
     <div className="App">
       <div>
-        <Pie data={chartData}/>
+        <h2>Total: {totalRam}MB </h2>
+        <Doughnut data={chartData}/>
       </div>
     </div>
   );
 };
 
-export default Reporte5;
+export default ReporteRam;
