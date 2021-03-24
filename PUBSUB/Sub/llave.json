@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pure-advantage-305004",
+  "private_key_id": "e05f69eeefb93ca2e0cac3b917d567f085c7e73b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCxNF9SSie3Tiep\nWZBh2NNVPL5PqK4YasljzPI1UvKFJYKn7GHz3hlVAE//X3QJatpHnnGdKqAwT/8g\nxIY7TId1Bfmkrnd0Jz/JoOvugheYilvvTm7iMoNgw0fuz1V22S5gSi2s3HqhjD9O\nKGAVwN/9N0aDvHger3/x49DuYO3l9xfc2SUr6psJUheprdxJMEk4PgeGGPGDjndU\n+1gApmHAxbGyUXDUwweTstzBowc8xu4mkWGzSzVjV3U0c9DdfaAE9yMtYiKaemZU\nqiufAkRbihL52l7DMLMfkoSxQCd/4umvchfj29+IIh2SwxVJOTSyrDUi4ZVZpUnf\nrd4J92bJAgMBAAECggEAIh/YRWQDXvDdgWa+f6E+HTl72qI8mHYj/ySN9gfZrRtK\nnGTQfiJklXJgdWif01pw237fGSmGvJcDJf/Ca7Pyl+4FI5n3ZfZS+dST6pPB0H3A\nc4aSotugYido+EuUBTWQkTlnr1SsBuUXocjzq+y/Faep3B+UsDASvvWkm+stlO2c\n8cFBJj5BmmTVzXyDN/0ze+o2qaFi16hPa56B9FJJDsvSTDL91BYNfe4sYRdayVqj\nYeGucGt8RhiAnKgnPs+bM2cI1N6f8Dct2hpxb7V1B/TzkLWnXkFYqDCLuzgviKmI\nPZxB7zcffrxzneYTICWatmkm0LE++LvGCJmHZC3ZqQKBgQDWI9d5zi2ru5glOBl9\nJ+oMxAkxZvDQTgx1no1ZEVkcOV+xL+fk25IuqK1C44IDhdZaAdeoiXuA8sLjsZrM\nMyWwagaPShQetiWtdpi79NaOwI9xOvQDi7y2b1s043HyhE8oO06ss+jty8jZ2cH1\nL7qWNS2czSLf0af7xDyJ8IARNQKBgQDT2C4Axh+uwWO77sydwhnveNj3bpRePnsJ\nkwO0K3NWfCxnAaFrdLH00dXa9ISsrg6DhRsVCitLnkFeE59m9vDMpREriVV72OiN\nzD4CrvMr94mQ2HGTvbjAztI5yjeCMtdBEghZInqc0+4yLf26LQOD/P7HMfjZ5tMR\nRDvEgGelxQKBgQDMoAlKktOflC5p+naY2yhTNIzYUVbypnJPfsfxAZvWVZj0dyOv\n1IWW4oZWMZLOjPjsn3AV0/JZoSDMda3HTWTJdDd6ez5IrqPIY1jF2sugM6+ecsg0\nDzawWi6clm8PYJFHj4y5iV2exinSyrwF8Krq2DwS5w9ZMz3DXpy+7zthtQKBgCRa\nHlrHpLwqN2ESc05G9ohfZmvfL9qUQiy8a5BJPHuEx2HNp9N2rOrj7xyphPLU02zC\nNImBuzg4qeLo3xueGGglkzKzWFXuPMnIWIPBXb0XtyWB3suJbOC5HN4J00imTMW/\nwGr7PasXuvIlbjq6arYFffrUmm1Z7LIz0UXA+wg5AoGAHKTmzQ27Jy8v7lLD2q7v\nYiBu1BCNxjlOfGmA1KG/epI2Ov81TDQWV7m/HYxYKkNI/mLWnRTRA5ynwMIn16Gg\nKpn+uVWvVAn7gcgLGRcGdSTIAoucNqABG9cwpq9lshqrTJC+xaOk4jwbPRE8sQOZ\nhEPjQ7sweAxPUkra0QR24qk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "partego@pure-advantage-305004.iam.gserviceaccount.com",
+  "client_id": "117491116246957395270",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/partego%40pure-advantage-305004.iam.gserviceaccount.com"
+}
